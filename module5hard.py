@@ -14,8 +14,7 @@ class UrTube:
     def register(self, nickname, password, age):
         for user in self.users:
             if nickname in user.nickname:
-                print(f'Пользователь {nickname} уже существует')
-                break
+                return print(f'Пользователь {nickname} уже существует')
         user = User(nickname, password, age)
         self.users.append(user)
         self.current_user = user
@@ -24,8 +23,9 @@ class UrTube:
         self.current_user = None
 
     def add(self, *args):
-        for title in args:
-            self.videos.append(title)
+        for new_video in args:
+            if not any(video.title == new_video.title for video in self.videos):
+                self.videos.append(new_video)
 
     def get_videos(self, search_word):
         list_titles = []
@@ -37,15 +37,14 @@ class UrTube:
     def watch_video(self, film_name):
         if not self.current_user:
             return print('Войдите в аккаунт, чтобы смотреть видео')
-        elif self.current_user.age < 18:
-            print('Вам нет 18 лет, пожалуйста покиньте страницу')
-        elif self.current_user:
-            for video in self.videos:
-                if film_name in video.title:
-                    for i in range(1, 11):
-                        print(i, end=' ')
-                        time.sleep(1)
-                    print('Конец видео')
+        for video in self.videos:
+            if film_name in video.title:
+                if video.adult_mode and self.current_user.age < 18:
+                    return print('Вам нет 18 лет, пожалуйста покиньте страницу')
+                for i in range(1, video.duration+1):
+                    print(i, end=' ')
+                    time.sleep(1)
+                return print('Конец видео')
 
     def __str__(self):
         return f'{self.videos}'
@@ -69,10 +68,10 @@ class User:
 
 
 class Video:
-    def __init__(self, title, duration, time_now=0, adult_mode=False):
+    def __init__(self, title, duration, adult_mode=False):
         self.title = title
         self.duration = duration
-        self.time_now = time_now
+        self.time_now = 0
         self.adult_mode = adult_mode
 
     def __str__(self):
