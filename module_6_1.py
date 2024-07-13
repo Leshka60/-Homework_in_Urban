@@ -40,12 +40,16 @@ class Predator(Animal):
 
 
 class Flower(Plant):
-    name = ''
+    
+        def __init__(self, name):
+            super().__init__(name)
 
 
 class Fruit(Plant):
     edible = True
-    name = ''
+    
+        def __init__(self, name):
+            super().__init__(name)
 
 
 a1 = Predator('Волк с Уолл-Стрит')
