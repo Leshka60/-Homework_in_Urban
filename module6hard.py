@@ -5,7 +5,6 @@ class Figure:
     sides_count = 0
 
     def __init__(self, color, *sides, filled=True):
-        # super().__init__()
         self.__sides = [*sides]
         self.__color = [*color]
         self.filled = filled
