@@ -7,12 +7,12 @@ def read_info(name):
     with open(name, 'r') as f:
         while True:
             line = f.readline()
+            all_data.append(line)
             if not line:
                 break
-            all_data.append(line)
 
 
-files = [f'file {number}.txt' for number in range(1, 5)]
+files = [f'./file {number}.txt' for number in range(1, 5)]
 
 start_time = datetime.now()
 for file_name in files:
