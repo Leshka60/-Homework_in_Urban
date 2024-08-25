@@ -23,10 +23,10 @@ print(f'Линейный вызов: {end_time - start_time}')
 # Линейный вызов: 0:00:04.559782
 
 if __name__ == '__main__':
-    with Pool(4) as p:
-        start_time = datetime.now()
+    start_time = datetime.now()
+    with Pool(4) as p:       
         p.map(read_info, files)
-        end_time = datetime.now()
+    end_time = datetime.now()
     print(f'Многопроцессорный вызов: {end_time - start_time}')
 
-# Многопроцессорный вызов: 0:00:01.636122
+# Многопроцессорный вызов: 0:00:02.043039
