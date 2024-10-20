@@ -20,7 +20,7 @@ balance INTEGER NOT NULL)
 
 # for i in range(1, 11):
 #     cursor.execute('INSERT INTO Users (username, email, age, balance) VALUES (?, ?, ?, ?)',
-#                    (f'User{i}', f'example{i}@gmail.com', f'i * 10', '1000'))
+#                    (f'User{i}', f'example{i}@gmail.com', f'{i * 10}', '1000'))
 
 '''Обновите balance у каждой 2ой записи начиная с 1ой на 500:'''
 
