@@ -7,7 +7,7 @@ import tracemalloc
 tracemalloc.start()
 
 
-api = "7634455574:AAETXjoYUI9Qka1k-JDs4Tkj4P3TxHjOe08"
+api = "AAA"
 bot = Bot(token=api)
 dp = Dispatcher(bot, storage=MemoryStorage())
 
