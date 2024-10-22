@@ -41,14 +41,10 @@ inline_kb_prod.add(ib_product1, ib_product2, ib_product3, ib_product4)
 
 @dp.message_handler(text='Купить')
 async def get_buying_list(message):
-    with open('Product1.jpg', 'rb') as p1:
-        await message.reply_photo(p1, f'Название: Product1 | Описание: описание 1 | Цена: {1 * 100}')
-    with open('Product2.jpg', 'rb') as p2:
-        await message.reply_photo(p2, f'Название: Product2 | Описание: описание 2 | Цена: {2 * 100}')
-    with open('Product3.jpg', 'rb') as p3:
-        await message.reply_photo(p3, f'Название: Product3 | Описание: описание 3 | Цена: {3 * 100}')
-    with open('Product4.jpg', 'rb') as p4:
-        await message.reply_photo(p4, f'Название: Product4 | Описание: описание 4 | Цена: {4 * 100}')
+        for i in range(1, 5):
+        with open(f'Product{i}.jpg', 'rb') as prod:
+            await message.reply_photo(prod, f'Название: Product{i} | Описание: описание {i} | Цена: {i * 100}')
+    await message.answer('Выберите продукт для покупки:', reply_markup=inline_kb_prod)
     await message.answer('Выберите продукт для покупки:', reply_markup=inline_kb_prod)
 
 
