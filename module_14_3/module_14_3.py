@@ -45,7 +45,6 @@ async def get_buying_list(message):
         with open(f'Product{i}.jpg', 'rb') as prod:
             await message.reply_photo(prod, f'Название: Product{i} | Описание: описание {i} | Цена: {i * 100}')
     await message.answer('Выберите продукт для покупки:', reply_markup=inline_kb_prod)
-    await message.answer('Выберите продукт для покупки:', reply_markup=inline_kb_prod)
 
 
 @dp.callback_query_handler(text='product_buying')
