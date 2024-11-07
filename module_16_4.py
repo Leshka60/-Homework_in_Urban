@@ -2,7 +2,6 @@ from fastapi import FastAPI, HTTPException, Path
 from pydantic import BaseModel
 from typing import List, Annotated
 
-
 app = FastAPI()
 
 users = []
@@ -20,12 +19,15 @@ async def get_users() -> List[User]:
 
 
 @app.post('/user/{username}/{age}', response_model=str)
-async def create_user(user: User, username: Annotated[str, Path(min_length=5, max_length=20, description='Enter username',
-                example='UrbanUser')], age: int = Path(ge=18, le=120, description='Enter age', example='24')) -> User:
+async def create_user(user: User,
+                      username: Annotated[str, Path(min_length=5, max_length=20,
+                                                    description='Enter username', example='UrbanUser')],
+                      age: int = Path(ge=18, le=120, description='Enter age', example='24')
+                      ) -> User:
     if len(users) == 0:
         user.id = 1
     else:
-        user.id = len(users) + 1
+        user.id = users[-1].id + 1
     user.username = username
     user.age = age
     users.append(user)
@@ -34,12 +36,12 @@ async def create_user(user: User, username: Annotated[str, Path(min_length=5, ma
 
 @app.put('/user/{user_id}/{username}/{age}', response_model=str)
 async def update_user(user_id: int, username: str, age: int) -> User:
-   for user in users:
-       if user.id == user_id:
-           user.username = username
-           user.age = age
-           return user
-   raise HTTPException(status_code=404, detail='User was not found')
+    for user in users:
+        if user.id == user_id:
+            user.username = username
+            user.age = age
+            return user
+    raise HTTPException(status_code=404, detail='User was not found')
 
 
 @app.delete("/user/{user_id}", response_model=str)
