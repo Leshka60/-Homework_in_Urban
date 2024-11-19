@@ -18,7 +18,7 @@ async def all_tasks(db: Annotated[Session, Depends(get_db)]):
 
 @router.get('/task_id')
 async def task_by_id(db: Annotated[Session, Depends(get_db)], task_id: int):
-    sought_task = db.scalars(select(Task).where(Task.id == task_id))
+    sought_task = db.scalar(select(Task).where(Task.id == task_id))
     if not sought_task:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='User not found')
     return sought_task
@@ -26,7 +26,7 @@ async def task_by_id(db: Annotated[Session, Depends(get_db)], task_id: int):
 
 @router.post('/create')
 async def create_task(db: Annotated[Session, Depends(get_db)], create_task_: CreateTask, user_id: int):
-    found_user = db.scalars(select(User).where(User.id == user_id))
+    found_user = db.scalar(select(User).where(User.id == user_id))
     if not found_user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='User not found')
     db.execute(insert(Task).values(title=create_task_.title,
@@ -40,7 +40,7 @@ async def create_task(db: Annotated[Session, Depends(get_db)], create_task_: Cre
 
 @router.put('/update')
 async def update_task(db: Annotated[Session, Depends(get_db)], task_id: int, update_task: UpdateTask):
-    change_task = db.scalars(select(Task).where(Task.id == task_id))
+    change_task = db.scalar(select(Task).where(Task.id == task_id))
     if not change_task:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='User not found')
     db.execute(update(Task).where(Task.id == task_id).values(title=update_task.title,
@@ -53,7 +53,7 @@ async def update_task(db: Annotated[Session, Depends(get_db)], task_id: int, upd
 
 @router.delete('/delete')
 async def delete_task(db: Annotated[Session, Depends(get_db)], task_id: int):
-    existing_task = db.scalars(select(Task).where(Task.id == task_id))
+    existing_task = db.scalar(select(Task).where(Task.id == task_id))
     if not existing_task:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='User not found')
     db.execute(delete(Task).where(Task.id == task_id))
