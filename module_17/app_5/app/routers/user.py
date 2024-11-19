@@ -19,7 +19,7 @@ async def all_users(db: Annotated[Session, Depends(get_db)]):
 
 @router.get('/user_id')
 async def user_by_id(db: Annotated[Session, Depends(get_db)], user_id: int):
-    sought_user = db.scalars(select(User).where(User.id == user_id))
+    sought_user = db.scalar(select(User).where(User.id == user_id))
     if not sought_user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='User not found')
     return sought_user
@@ -27,7 +27,7 @@ async def user_by_id(db: Annotated[Session, Depends(get_db)], user_id: int):
 
 @router.post('/create')
 async def create_user(db: Annotated[Session, Depends(get_db)], new_user: CreateUser):
-    append_user = db.scalars(select(User).where(User.username == create_user.username))
+    append_user = db.scalar(select(User).where(User.username == create_user.username))
     if append_user is not None:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail='Username already exists')
     db.execute(insert(User).values(username=new_user.username,
@@ -41,7 +41,7 @@ async def create_user(db: Annotated[Session, Depends(get_db)], new_user: CreateU
 
 @router.put('/update')
 async def update_user(db: Annotated[Session, Depends(get_db)], user_id: int, update_user: UpdateUser):
-    change_user = db.scalars(select(User).where(User.id == user_id))
+    change_user = db.scalar(select(User).where(User.id == user_id))
     if not change_user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='User not found')
     db.execute(update(User).where(User.id == user_id).values(username=update_user.username,
@@ -55,7 +55,7 @@ async def update_user(db: Annotated[Session, Depends(get_db)], user_id: int, upd
 
 @router.delete('/delete')
 async def delete_user(db: Annotated[Session, Depends(get_db)], user_id: int):
-    existing_user = db.scalars(select(User).where(User.id == user_id))
+    existing_user = db.scalar(select(User).where(User.id == user_id))
     if not existing_user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='User not found')
     db.execute(delete(Task).where(Task.user_id == user_id))
@@ -66,5 +66,5 @@ async def delete_user(db: Annotated[Session, Depends(get_db)], user_id: int):
 
 @router.get('/{user_id}/tasks')
 async def tasks_by_user_id(db: Annotated[Session, Depends(get_db)], user_id: int):
-    tasks = db.scalars(select(Task).where(Task.user_id == user_id)).all()
+    tasks = db.scalar(select(Task).where(Task.user_id == user_id)).all()
     return tasks
