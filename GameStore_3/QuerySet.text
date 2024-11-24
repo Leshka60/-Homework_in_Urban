@@ -1,0 +1,30 @@
+(InteractiveConsole)
+>>> from task1.models import Buyer
+
+>>> Buyer.objects.create(name='Aleks', balance='1500.05', age='24')
+<Buyer: Aleks>
+
+>>> Buyer.objects.create(name='Tom', balance='142.15', age='52')
+<Buyer: Tom>
+
+>>> Buyer.objects.create(name='Kat', balance='40.5', age='16')
+<Buyer: Kat>
+
+>>> from task1.models import Game
+
+>>> Game.objects.create(title='Cyberpunk 2077', cost='30.5', size='46.2', description='very good', age_limited=True)
+<Game: Cyberpunk 2077>
+
+>>> Game.objects.create(title='Mario', cost='5', size='0.5', description='Old', age_limited=False)
+<Game: Mario>
+
+>>> Game.objects.create(title='Hitman', cost='12', size='24.2', description='Good', age_limited=True)
+<Game: Hitman>
+
+>>> buyer_1=Buyer.objects.get(id=1)
+>>> buyer_2=Buyer.objects.get(id=2)
+>>> buyer_3=Buyer.objects.get(id=3)
+
+>>> Game.objects.get(id=1).buyer.set((buyer_1, buyer_2))
+>>> Game.objects.get(id=2).buyer.set((buyer_2, buyer_3))
+>>> Game.objects.get(id=3).buyer.set((buyer_1, buyer_2))
