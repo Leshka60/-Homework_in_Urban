@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title>Список публикаций</title>
     <style>
-        /* Стили для пагинации */
         .pagination {
             display: flex;
             justify-content: center;
@@ -39,7 +38,6 @@
 
 <h1>Список</h1>
 
-<!-- Перебираем посты и выводим их -->
 <div>
     {% for post in page_obj %}
         <div>
@@ -53,7 +51,6 @@
     {% endfor %}
 </div>
 
-<!-- Выпадающий список для выбора количества постов на странице -->
 <div>
     <form method="get" style="margin-bottom: 20px;">
         <label for="per_page">Показать на странице:</label>
@@ -65,7 +62,6 @@
     </form>
 </div>
 
-<!-- Пагинация -->
 <div>
     <ul class="pagination">
         {% if page_obj.has_previous %}
@@ -76,7 +72,6 @@
             <li class="disabled"><span>Предыдущая</span></li>
         {% endif %}
 
-        <!-- Номера страниц -->
         {% for num in page_obj.paginator.page_range %}
             {% if num == page_obj.number %}
                 <li class="current"><span>{{ num }}</span></li>
