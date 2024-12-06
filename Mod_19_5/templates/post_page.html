@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Список публикаций</title>
+    <style>
+        /* Стили для пагинации */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            list-style-type: none;
+            padding: 0;
+        }
+        .pagination li {
+            margin: 0 5px;
+        }
+        .pagination a {
+            text-decoration: none;
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            color: #007bff;
+        }
+        .pagination .current {
+            background-color: #007bff;
+            color: white;
+        }
+        .pagination .disabled {
+            color: #ccc;
+            pointer-events: none;
+        }
+        .pagination select {
+            padding: 5px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Список</h1>
+
+<!-- Перебираем посты и выводим их -->
+<div>
+    {% for post in page_obj %}
+        <div>
+            <h2>{{ post.title }}</h2>
+            <p>{{ post.content|truncatewords:30 }}</p>
+            <p><em>{{ post.created_at }}</em></p>
+        </div>
+        <hr>
+    {% empty %}
+        <p>Нет публикаций</p>
+    {% endfor %}
+</div>
+
+<!-- Выпадающий список для выбора количества постов на странице -->
+<div>
+    <form method="get" style="margin-bottom: 20px;">
+        <label for="per_page">Показать на странице:</label>
+        <select name="per_page" id="per_page" onchange="this.form.submit()">
+            <option value="3" {% if per_page == 3 %}selected{% endif %}>3</option>
+            <option value="5" {% if per_page == 5 %}selected{% endif %}>5</option>
+            <option value="10" {% if per_page == 10 %}selected{% endif %}>10</option>
+        </select>
+    </form>
+</div>
+
+<!-- Пагинация -->
+<div>
+    <ul class="pagination">
+        {% if page_obj.has_previous %}
+            <li><a href="?page=1&per_page={{ per_page }}">&laquo; Первая</a></li>
+            <li><a href="?page={{ page_obj.previous_page_number }}&per_page={{ per_page }}">Предыдущая</a></li>
+        {% else %}
+            <li class="disabled"><span>&laquo; Первая</span></li>
+            <li class="disabled"><span>Предыдущая</span></li>
+        {% endif %}
+
+        <!-- Номера страниц -->
+        {% for num in page_obj.paginator.page_range %}
+            {% if num == page_obj.number %}
+                <li class="current"><span>{{ num }}</span></li>
+            {% else %}
+                <li><a href="?page={{ num }}&per_page={{ per_page }}">{{ num }}</a></li>
+            {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+            <li><a href="?page={{ page_obj.next_page_number }}&per_page={{ per_page }}">Следующая</a></li>
+            <li><a href="?page={{ page_obj.paginator.num_pages }}&per_page={{ per_page }}">Последняя &raquo;</a></li>
+        {% else %}
+            <li class="disabled"><span>Следующая</span></li>
+            <li class="disabled"><span>Последняя &raquo;</span></li>
+        {% endif %}
+    </ul>
+</div>
+
+</body>
+</html>
